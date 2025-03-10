@@ -38,6 +38,13 @@ func (r *routersDone) isDone(routerName string) bool {
 	return false
 }
 
+func (r *routersDone) clearRoutersDone() {
+	r.mut.Lock()
+	defer r.mut.Unlock()
+
+	r.done = make(map[string]struct{})
+}
+
 func NewApp(conf config.Config, log *logger.Logger) App {
 	return App{
 		conf: conf,
@@ -95,6 +102,7 @@ func (a App) AppModeFactory() func() error {
 			}
 
 			a.wg.Wait()
+			a.routersDone.clearRoutersDone()
 
 			a.log.Info("Multi router backup complete")
 
@@ -147,6 +155,7 @@ func (a App) AppModeFactory() func() error {
 			}
 
 			a.wg.Wait()
+			a.routersDone.clearRoutersDone()
 
 			a.log.Info("Discovery mode routers backup complete")
 
