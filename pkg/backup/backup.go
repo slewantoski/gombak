@@ -76,13 +76,13 @@ identLoop:
 		}
 	}
 
-	if len(ident) > 9 {
-		host = strings.TrimSpace(strings.ReplaceAll(ident[8:], " ", "-"))
-	} else {
-		host = strings.TrimSpace(strings.ReplaceAll(ident, " ", "-"))
-	}
+	ident = strings.ReplaceAll(ident, "\r\n        ", "")
+	ident = strings.TrimSpace(ident)
+	ident = strings.TrimPrefix(ident, "name")
+	ident = strings.TrimPrefix(ident, ":")
+	ident = strings.TrimSpace(ident)
 
-	host = strings.ReplaceAll(host, ":", "")
+	host = strings.ReplaceAll(ident, ":", "")
 
 	b.host = host
 
